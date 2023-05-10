@@ -19,19 +19,21 @@ public class Persona {
         this.sexo = Persona.HOMBRE;
         this.peso = 0;
         this.altura = 0;
+        this.dni = generaDNI();
     }
     public Persona(String nombre, Integer edad, char sexo) {
         this.edad = edad;
         this.nombre = nombre;
         this.sexo = sexo;
-        this.peso = peso;
-        this.altura = altura;
+        this.peso = 0;
+        this.altura = 0;
+        this.dni = generaDNI();
     }
 
-    public Persona(Integer edad, String nombre, String dni, char sexo, Integer peso, Integer altura) {
+    public Persona(Integer edad, String nombre, char sexo, Integer peso, Integer altura) {
         this.edad = edad;
         this.nombre = nombre;
-        this.dni = dni;
+        this.dni = generaDNI();
         this.sexo = sexo;
         this.peso = peso;
         this.altura = altura;
@@ -57,6 +59,29 @@ public class Persona {
         }
         return result;
     }
+
+    private String generaDNI()
+    {
+        StringBuilder dni= new StringBuilder();
+        for (int i=0;i<8;i++)
+        {
+            dni.append(Math.random() * 9);
+        }
+        return dni.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "edad=" + edad +
+                ", nombre='" + nombre + '\'' +
+                ", dni='" + dni + '\'' +
+                ", sexo=" + sexo +
+                ", peso=" + peso +
+                ", altura=" + altura +
+                '}';
+    }
+
     public Integer getEdad() {
         return edad;
     }
