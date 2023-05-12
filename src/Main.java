@@ -1,3 +1,4 @@
+import models.Password;
 import models.Persona;
 
 import java.util.HashMap;
@@ -5,6 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        /*
         Scanner scanner=new Scanner(System.in);
         System.out.println("Ingrese un nombre: ");
         String nombre=scanner.nextLine();
@@ -29,6 +31,10 @@ public class Main {
         personas.put(persona1.getDni(),persona1);
         personas.put(persona2.getDni(),persona2);
         personas.put(persona3.getDni(),persona3);
+*/
+        Password password=new Password(8);
+
+        System.out.println(password);
 
 
 

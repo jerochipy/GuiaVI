@@ -2,17 +2,19 @@ package models;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Random;
 
 public class Password {
-    private static final String[] MINUSCULAS = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s","t", "u", "v", "w", "x", "y", "z"};
+    private static final String MINUSCULAS = "abcdefghijklmnopqrstuvwxyz";
+    private static final String MAYUSCULAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String NUMEROS = "0123456789";
 
-    private static final String[] MAYUSCULAS= {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-    private static final String[] NUMEROS= {"0","1", "2", "3", "4", "5", "6", "7", "8", "9"};
     private Integer longitud;
     private String contraseña;
 
     public Password() {
         this.longitud=8;
+        this.contraseña=generarPassword();
     }
 
     public Password(Integer longitud) {
@@ -20,12 +22,39 @@ public class Password {
         this.contraseña =generarPassword();
     }
     private String generarPassword(){
+        String caracteres= MINUSCULAS+MAYUSCULAS + NUMEROS;
+        StringBuilder chars = new StringBuilder();
         String pass="";
-        String characters= Arrays.toString(MAYUSCULAS) + Arrays.toString(MINUSCULAS) + Arrays.toString(NUMEROS);
-        for(int i=0;i<longitud;i++)
-        {
 
+        //generar mayusculas
+        for(int i=0;i<2;i++)
+        {
+            chars.append(mayAleatorio());
         }
+        //generar numeros
+        for(int i=0;i<5;i++)
+        {
+            chars.append(numAleatorio());
+        }
+        //generar minusculas
+        for(int i=0;i<1;i++)
+        {
+            chars.append(minAleatorio());
+        }
+
+        while (pass.length()<longitud)
+        {
+            if(!esFuerte(pass)){
+                int pos= ((int) (Math.random() * chars.length()));
+                String caracter= String.valueOf(chars.charAt(pos));
+                pass+=caracter;
+                chars = new StringBuilder(chars.toString().replaceFirst(caracter, ""));
+            }
+            else {
+                pass+=caracteres.charAt((int) (Math.random()*caracteres.length()));
+            }
+        }
+
         return pass;
     }
 
@@ -34,13 +63,14 @@ public class Password {
         int contMay=0;
         int contNum=0;
         int contMin=0;
-        for (int i=0;i<longitud;i++)
-        {
-            char letra=pass.charAt(i);
-            contMay+=contarCaracteres(letra, Arrays.toString(MAYUSCULAS));
-            contMin+=contarCaracteres(letra, Arrays.toString(MINUSCULAS));
-            contNum+=contarCaracteres(letra, Arrays.toString(NUMEROS));
-        }
+
+            for (int i = 0; i < pass.length(); i++) {
+                char letra = pass.charAt(i);
+                contMay += contarCaracteres(letra, MAYUSCULAS);
+                contMin += contarCaracteres(letra, MINUSCULAS);
+                contNum += contarCaracteres(letra, NUMEROS);
+            }
+
 
         return contMay>=2 && contNum>=5 && contMin>=1;
 
@@ -50,4 +80,21 @@ public class Password {
         return (int) palabra.toString().chars().filter(letra->letra==caracter).count();
     }
 
+    private String numAleatorio(){
+        return String.valueOf(NUMEROS.charAt((int) (Math.random() * NUMEROS.length())));
+    }
+    private String mayAleatorio(){
+        return String.valueOf(MAYUSCULAS.charAt((int) (Math.random() * MAYUSCULAS.length())));
+    }
+    private String minAleatorio(){
+        return String.valueOf(MINUSCULAS.charAt((int) (Math.random() * MINUSCULAS.length())));
+    }
+
+    @Override
+    public String toString() {
+        return "Password{" +
+                "longitud=" + longitud +
+                ", contraseña='" + contraseña + '\'' +
+                '}';
+    }
 }
